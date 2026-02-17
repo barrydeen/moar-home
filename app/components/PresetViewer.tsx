@@ -2,210 +2,182 @@
 
 import { useState } from "react";
 import CopyButton from "./CopyButton";
+import { Sparkles, Terminal, FileCode, CheckCircle2 } from "lucide-react";
 
-const presets = {
-    PUBLIC: {
-        label: "The Town Square",
-        description: "An open relay for everyone. Rate-limited but censorship-resistant.",
+const vibePrompts = [
+    {
+        id: "public",
+        label: "Public Town Square",
+        prompt: "I want a public relay on my 'www' subdomain that anyone can read, but you need a bit of Proof of Work to post to keep the spam down.",
         toml: `[relays.public]
-name = "Town Square"
-description = "Free speech for all"
+name = "The Town Square"
+description = "Vibe-genned public relay"
 subdomain = "www"
 
 [relays.public.policy.write]
 require_auth = false
-min_pow = 20
+min_pow = 24  # Spam protection enabled
 
 [relays.public.policy.read]
 require_auth = false`,
     },
-    PRIVATE: {
-        label: "Walled Garden",
-        description: "Invite-only. Whitelist specific pubkeys for exclusive access.",
+    {
+        id: "private",
+        label: "Personal Archive",
+        prompt: "Make me a private sub-relay for my own notes and DMs. Only my pubkey should be able to read or write anything.",
         toml: `[relays.private]
-name = "The Citadel"
-description = "Members only"
-subdomain = "private"
+name = "Barry's Archive"
+description = "Sovereign data vault"
+subdomain = "me"
 
 [relays.private.policy.write]
 require_auth = true
-allowed_pubkeys = [
-    "npub1...", 
-    "npub1..."
-]`,
-    },
-    PAID: {
-        label: "Pay-to-Play",
-        description: "Monetize your infrastructure. Require Lightning payments for access.",
-        toml: `[relays.paid]
-name = "Premium Relay"
-description = "High-speed, paid access"
+allowed_pubkeys = ["npub1yourpubkey..."]
 
-[relays.paid.policy.write]
+[relays.private.policy.read]
 require_auth = true
-# NIP-42 Auth required
-# Subscription billing managed by gateway`,
+allowed_pubkeys = ["npub1yourpubkey..."]`,
     },
-    BLOSSOM: {
-        label: "Media Server",
-        description: "Host images and videos with BUD-01 Blossom support.",
+    {
+        id: "media",
+        label: "Sovereign Media",
+        prompt: "Give me a Blossom server on cdn.domain.com that allows me to upload up to 100MB files, and anyone can view them.",
         toml: `[blossoms.media]
-name = "CDN Node 1"
-storage_path = "data/media"
+name = "My Media Node"
 subdomain = "cdn"
+storage_path = "/var/lib/moar/media"
 
 [blossoms.media.policy.upload]
 require_auth = true
-max_file_size = 52428800 # 50MB`,
-    },
-};
+max_file_size = 104857600 # 100MB
+
+[blossoms.media.policy.download]
+require_auth = false`,
+    }
+];
 
 export default function PresetViewer() {
-    const [active, setActive] = useState<keyof typeof presets>("PUBLIC");
+    const [active, setActive] = useState(vibePrompts[0]);
+    const [isVibing, setIsVibing] = useState(false);
+
+    const handleVibe = (prompt: typeof vibePrompts[0]) => {
+        setIsVibing(true);
+        setActive(prompt);
+        setTimeout(() => setIsVibing(false), 800);
+    };
 
     return (
-        <div className="mx-auto max-w-4xl">
-            {/* Tabs */}
-            <div className="mb-8 flex flex-wrap justify-center gap-2 sm:gap-4">
-                {(Object.keys(presets) as Array<keyof typeof presets>).map((key) => (
+        <div className="mx-auto max-w-5xl space-y-12">
+
+            {/* Vibe Prompts Selection */}
+            <div className="grid gap-4 sm:grid-cols-3">
+                {vibePrompts.map((p) => (
                     <button
-                        key={key}
-                        onClick={() => setActive(key)}
-                        className={`rounded-full border px-6 py-2 font-mono text-sm transition-all duration-300 ${active === key
-                            ? "border-fuchsia-500 bg-fuchsia-500/10 text-white shadow-[0_0_15px_rgba(217,70,239,0.3)]"
-                            : "border-transparent bg-zinc-900/50 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
+                        key={p.id}
+                        onClick={() => handleVibe(p)}
+                        className={`group relative flex flex-col items-start rounded-xl border p-4 text-left transition-all duration-300 ${active.id === p.id
+                            ? "border-fuchsia-500 bg-fuchsia-500/10 shadow-[0_0_20px_rgba(217,70,239,0.1)]"
+                            : "border-zinc-800 bg-zinc-900/30 hover:border-zinc-700 hover:bg-zinc-900/50"
                             }`}
                     >
-                        {presets[key].label}
+                        <span className={`text-xs font-mono font-bold uppercase tracking-wider ${active.id === p.id ? "text-fuchsia-400" : "text-zinc-500"}`}>
+                            {p.label}
+                        </span>
+                        <p className={`mt-2 text-xs leading-relaxed ${active.id === p.id ? "text-zinc-200" : "text-zinc-500"}`}>
+                            &quot;{p.prompt}&quot;
+                        </p>
+                        {active.id === p.id && (
+                            <div className="absolute right-3 top-3">
+                                <Sparkles size={14} className="animate-pulse text-fuchsia-400" />
+                            </div>
+                        )}
                     </button>
                 ))}
             </div>
 
-            {/* Code Window */}
-            <div className="glass-card-solid relative overflow-hidden rounded-xl">
-                {/* Window Chrome */}
-                <div className="flex items-center justify-between border-b border-white/5 bg-zinc-900/50 px-4 py-3">
-                    <div className="flex gap-2">
-                        <div className="h-3 w-3 rounded-full bg-zinc-700" />
-                        <div className="h-3 w-3 rounded-full bg-zinc-700" />
-                        <div className="h-3 w-3 rounded-full bg-zinc-700" />
+            {/* AI Generation Result */}
+            <div className="relative">
+                <div className={`glass-card-solid overflow-hidden rounded-2xl border border-white/10 transition-all duration-700 ${isVibing ? "scale-[0.98] blur-sm grayscale" : "scale-100 blur-0 grayscale-0"}`}>
+
+                    {/* Header */}
+                    <div className="flex items-center justify-between border-b border-white/5 bg-zinc-900/50 px-6 py-4">
+                        <div className="flex items-center gap-3">
+                            <div className="flex gap-1.5">
+                                <div className="h-2.5 w-2.5 rounded-full bg-red-500/20" />
+                                <div className="h-2.5 w-2.5 rounded-full bg-amber-500/20" />
+                                <div className="h-2.5 w-2.5 rounded-full bg-emerald-500/20" />
+                            </div>
+                            <span className="ml-2 font-mono text-[10px] text-zinc-500 uppercase tracking-widest">ai_config_gen.toml</span>
+                        </div>
+                        <CopyButton text={active.toml} />
                     </div>
-                    <div className="font-mono text-xs text-zinc-500">moar.toml</div>
-                    <CopyButton text={presets[active].toml} />
+
+                    {/* Content Area */}
+                    <div className="relative flex min-h-[300px] flex-col md:flex-row">
+                        {/* Prompt Reflection */}
+                        <div className="w-full border-b border-white/5 bg-zinc-900/20 p-8 md:w-1/3 md:border-b-0 md:border-r">
+                            <div className="inline-flex items-center gap-2 rounded-full bg-fuchsia-500/10 px-3 py-1 text-[10px] font-bold text-fuchsia-400">
+                                <Sparkles size={12} /> INPUT PROMPT
+                            </div>
+                            <p className="mt-4 text-sm leading-relaxed text-zinc-300 italic">
+                                &quot;{active.prompt}&quot;
+                            </p>
+                        </div>
+
+                        {/* Resulting TOML */}
+                        <div className="w-full p-8 md:w-2/3">
+                            <pre className="font-mono text-xs leading-loose text-zinc-400">
+                                <code>
+                                    {active.toml}
+                                </code>
+                            </pre>
+                        </div>
+                    </div>
+
+                    {/* Footer / Status */}
+                    <div className="flex items-center justify-between border-t border-white/5 bg-zinc-900/50 px-6 py-3">
+                        <div className="flex items-center gap-2 text-[10px] font-mono text-emerald-500">
+                            <CheckCircle2 size={12} />
+                            <span>CONFIG VALIDATED</span>
+                        </div>
+                        <div className="text-[10px] font-mono text-zinc-500 uppercase">
+                            Generated by MOAR AI Context
+                        </div>
+                    </div>
                 </div>
 
-                {/* Content */}
-                <div className="relative p-6">
-                    <pre className="overflow-x-auto font-mono text-sm leading-relaxed">
-                        <code
-                            className="block"
-                            dangerouslySetInnerHTML={{
-                                __html: highlightToml(presets[active].toml)
-                            }}
-                        />
-                    </pre>
-                </div>
+                {/* Vibe Loading Overlay */}
+                {isVibing && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/5 rounded-2xl">
+                        <div className="flex flex-col items-center gap-2">
+                            <div className="h-8 w-8 animate-spin rounded-full border-2 border-fuchsia-500 border-t-transparent" />
+                            <span className="font-mono text-[10px] font-bold text-fuchsia-500 animate-pulse">VIBING...</span>
+                        </div>
+                    </div>
+                )}
+            </div>
 
-                {/* Description Footer */}
-                <div className="border-t border-white/5 bg-fuchsia-500/5 px-6 py-4">
-                    <p className="text-center font-mono text-sm text-fuchsia-300">
-                        # {presets[active].description}
-                    </p>
+            {/* OpenClaw / Skill section */}
+            <div className="rounded-2xl border border-fuchsia-500/20 bg-gradient-to-br from-fuchsia-500/5 to-cyan-500/5 p-8 text-center">
+                <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-900 border border-fuchsia-500/30 text-2xl shadow-[0_0_20px_rgba(217,70,239,0.2)]">
+                    🦞
+                </div>
+                <h3 className="mb-2 text-xl font-bold text-white">Using OpenClaw?</h3>
+                <p className="mx-auto max-w-xl text-sm leading-relaxed text-zinc-400">
+                    Control MOAR directly from your agent with our specialized skill.
+                    Download <code className="text-zinc-200">SKILL.md</code> to give your AI
+                    the power to manage infrastructure while you sleep.
+                </p>
+                <div className="mt-8 flex justify-center gap-4">
+                    <a href="/SKILL.md" download className="flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-bold text-black transition-transform hover:scale-105">
+                        <FileCode size={18} /> Download SKILL.md
+                    </a>
+                    <button className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-6 py-3 text-sm font-bold text-white transition-all hover:bg-white/10 hover:border-white/20">
+                        View Integration Guide
+                    </button>
                 </div>
             </div>
+
         </div>
     );
-}
-
-// Safe line-by-line syntax highlighter
-function highlightToml(code: string) {
-    const escape = (str: string) =>
-        str
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
-
-    const lines = code.split("\n");
-
-    return lines
-        .map((line) => {
-            const trimmed = line.trim();
-            if (!trimmed) return ""; // Empty line
-
-            // 1. Comments
-            if (trimmed.startsWith("#")) {
-                return `<span class="token-comment">${escape(line)}</span>`;
-            }
-
-            // 2. Sections [section]
-            if (trimmed.startsWith("[")) {
-                return `<span class="token-key">${escape(line)}</span>`;
-            }
-
-            // 3. Key = Value pairs
-            const keyValMatch = line.match(/^(\s*)([a-z0-9_]+)(\s*=\s*)(.*)$/i);
-            if (keyValMatch) {
-                const [_, indent, key, equals, value] = keyValMatch;
-                const highlightedValue = highlightValue(value, escape);
-                return `${indent}<span class="text-zinc-300">${key}</span>${escape(equals)}${highlightedValue}`;
-            }
-
-            // 4. Other lines (e.g. array values, continuations)
-            return highlightValue(line, escape);
-        })
-        .join("\n");
-}
-
-function highlightValue(text: string, escapeFn: (s: string) => string) {
-    // We need to escape the text first, BUT we want to wrap tokens.
-    // So we split by tokens and escape/wrap pieces.
-    // Actually, simplest strategy for values:
-    // 1. Identify Strings, Bools, Numbers
-    // 2. Escape everything else.
-    // We can use a tokenizer approach for the value part.
-
-    let result = "";
-    let i = 0;
-
-    while (i < text.length) {
-        const remaining = text.slice(i);
-
-        // Strings
-        if (remaining.startsWith('"')) {
-            // Find end of string
-            const match = remaining.match(/^"[^"]*"/);
-            if (match) {
-                result += `<span class="token-string">${escapeFn(match[0])}</span>`;
-                i += match[0].length;
-                continue;
-            }
-        }
-
-        // Booleans
-        const boolMatch = remaining.match(/^(true|false)\b/);
-        if (boolMatch) {
-            result += `<span class="token-bool">${boolMatch[0]}</span>`;
-            i += boolMatch[0].length;
-            continue;
-        }
-
-        // Numbers
-        const numMatch = remaining.match(/^\d+\b/);
-        if (numMatch) {
-            result += `<span class="token-num">${numMatch[0]}</span>`;
-            i += numMatch[0].length;
-            continue;
-        }
-
-        // Comments at end of line
-        if (remaining.startsWith("#")) {
-            result += `<span class="token-comment">${escapeFn(remaining)}</span>`;
-            break; // Rest is comment
-        }
-
-        // Normal character (escape it)
-        result += escapeFn(text[i]);
-        i++;
-    }
-    return result;
 }

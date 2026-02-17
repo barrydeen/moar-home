@@ -2,10 +2,10 @@ import { Play, Pause, RefreshCw, Settings } from "lucide-react";
 
 export default function MockupRelays() {
     const relays = [
-        { name: "Public Town Square", sub: "www", status: "online", policy: "Open", type: "public" },
-        { name: "Private Citadel", sub: "private", status: "online", policy: "Auth", type: "private" },
-        { name: "Paid Premium", sub: "premium", status: "maintenance", policy: "Payment", type: "paid" },
-        { name: "Encrypted DMs", sub: "dm", status: "online", policy: "Auth", type: "private" },
+        { name: "Public Town Square", sub: "www", status: "online", policy: "Open Access", type: "public" },
+        { name: "Private Citadel", sub: "private", status: "online", policy: "Whitelisted", type: "private" },
+        { name: "Paid Premium", sub: "premium", status: "maintenance", policy: "Paid Account", type: "paid" },
+        { name: "Encrypted DMs", sub: "dm", status: "online", policy: "Auth Required", type: "private" },
     ];
 
     return (
@@ -23,7 +23,7 @@ export default function MockupRelays() {
                         <tr className="border-b border-zinc-800 bg-zinc-900/50 text-xs text-zinc-500">
                             <th className="px-4 py-3 font-mono">Name</th>
                             <th className="px-4 py-3 font-mono">Subdomain</th>
-                            <th className="px-4 py-3 font-mono">Status</th>
+                            <th className="px-4 py-3 font-mono">Policies</th>
                             <th className="px-4 py-3 font-mono text-right">Actions</th>
                         </tr>
                     </thead>
@@ -38,12 +38,8 @@ export default function MockupRelays() {
                                 </td>
                                 <td className="px-4 py-3 font-mono text-xs text-zinc-500">{relay.sub}.moar.host</td>
                                 <td className="px-4 py-3">
-                                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-medium ${relay.status === "online"
-                                            ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                                            : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                                        }`}>
-                                        {relay.status === "online" && <span className="h-1 w-1 rounded-full bg-emerald-400 animate-pulse" />}
-                                        {relay.status.toUpperCase()}
+                                    <span className="inline-flex items-center gap-1.5 rounded-full bg-fuchsia-500/10 px-2 py-0.5 text-[10px] font-medium text-fuchsia-400 border border-fuchsia-500/20">
+                                        {relay.policy.toUpperCase()}
                                     </span>
                                 </td>
                                 <td className="px-4 py-3 text-right">
@@ -61,7 +57,6 @@ export default function MockupRelays() {
 
             <div className="mt-4 flex items-center justify-between text-[10px] text-zinc-600 font-mono">
                 <span>Total Events: 14.2M</span>
-                <span>Storage: 12GB / 50GB</span>
             </div>
         </div>
     );
