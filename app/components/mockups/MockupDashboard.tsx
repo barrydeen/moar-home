@@ -1,54 +1,80 @@
+import { Activity, Database, HardDrive, Cpu, Layers } from "lucide-react";
+
 export default function MockupDashboard() {
     return (
-        <div className="h-full p-6">
-            {/* Stats Row */}
-            <div className="mb-8 grid grid-cols-3 gap-4">
+        <div className="h-full p-6 space-y-6">
+            {/* System Health Section */}
+            <div className="grid grid-cols-3 gap-4">
                 {[
-                    { label: "Active Connections", val: "1,248", color: "text-cyan-400" },
-                    { label: "Events Ingested", val: "84.3k", color: "text-fuchsia-400" },
-                    { label: "Storage Usage", val: "4.2 GB", color: "text-emerald-400" }
-                ].map(stat => (
-                    <div key={stat.label} className="rounded border border-zinc-800 bg-zinc-900/30 p-4">
-                        <p className="font-mono text-[10px] text-zinc-500 uppercase">{stat.label}</p>
-                        <p className={`mt-1 font-mono text-2xl font-bold ${stat.color}`}>{stat.val}</p>
+                    { label: "CPU Usage", val: "12%", icon: <Cpu size={14} />, color: "bg-cyan-500" },
+                    { label: "RAM Usage", val: "1.2GB/4GB", icon: <Layers size={14} />, color: "bg-fuchsia-500" },
+                    { label: "Disk Space", val: "42GB/100GB", icon: <HardDrive size={14} />, color: "bg-emerald-500" },
+                ].map((stat) => (
+                    <div key={stat.label} className="rounded-lg border border-zinc-800 bg-zinc-900/30 p-3">
+                        <div className="mb-2 flex items-center justify-between text-zinc-500">
+                            <span className="flex items-center gap-2 font-mono text-[10px] uppercase">
+                                {stat.icon} {stat.label}
+                            </span>
+                            <span className="font-mono text-[10px]">{stat.val}</span>
+                        </div>
+                        <div className="h-1 w-full overflow-hidden rounded-full bg-zinc-800">
+                            <div
+                                className={`h-full ${stat.color} transition-all duration-1000`}
+                                style={{ width: stat.val.includes('%') ? stat.val : '30%' }}
+                            />
+                        </div>
                     </div>
                 ))}
             </div>
 
-            {/* Main Graph Area */}
-            <div className="rounded border border-zinc-800 bg-zinc-900/20 p-6">
-                <div className="mb-6 flex items-center justify-between">
-                    <h3 className="font-mono text-sm text-zinc-300">Ingress Traffic (24h)</h3>
-                    <div className="flex gap-2">
-                        <span className="flex items-center gap-1 text-[10px] text-zinc-500">
-                            <span className="h-1.5 w-1.5 rounded-full bg-fuchsia-500" /> WebSocket
-                        </span>
-                        <span className="flex items-center gap-1 text-[10px] text-zinc-500">
-                            <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" /> HTTP
-                        </span>
+            {/* Aggregate Stats */}
+            <div className="grid grid-cols-3 gap-4">
+                {[
+                    { label: "Total Connections", val: "1,429", desc: "Across all instances", icon: <Activity className="text-cyan-400" /> },
+                    { label: "Total Notes Saved", val: "84.2M", desc: "Verified events", icon: <Database className="text-fuchsia-400" /> },
+                    { label: "Total Storage", val: "12.4 GB", desc: "LMDB footprint", icon: <HardDrive className="text-emerald-400" /> }
+                ].map(stat => (
+                    <div key={stat.label} className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4 transition-hover hover:border-zinc-700">
+                        <div className="mb-2 text-zinc-400">{stat.icon}</div>
+                        <p className="font-mono text-[10px] text-zinc-500 uppercase">{stat.label}</p>
+                        <p className="mt-1 font-mono text-2xl font-bold text-white">{stat.val}</p>
+                        <p className="mt-1 text-[10px] text-zinc-600 italic">{stat.desc}</p>
                     </div>
-                </div>
-                <div className="flex h-48 items-end justify-between gap-1">
-                    {[...Array(40)].map((_, i) => (
-                        <div
-                            key={i}
-                            style={{
-                                height: `${Math.random() * 60 + 20}%`,
-                                animationDelay: `${i * 0.05}s`
-                            }}
-                            className="graph-bar w-full rounded-t bg-gradient-to-t from-fuchsia-900/20 to-fuchsia-500/50"
-                        />
-                    ))}
-                </div>
+                ))}
             </div>
 
-            <div className="mt-4 flex justify-between text-[10px] font-mono text-zinc-600">
-                <span>00:00</span>
-                <span>06:00</span>
-                <span>12:00</span>
-                <span>18:00</span>
-                <span>23:59</span>
+            {/* Per Relay Stats */}
+            <div className="rounded-xl border border-zinc-800 bg-zinc-900/20 overflow-hidden">
+                <div className="border-b border-zinc-800 bg-zinc-900/50 px-4 py-3">
+                    <h3 className="font-mono text-xs font-bold text-zinc-300">Live Relay Breakdown</h3>
+                </div>
+                <table className="w-full text-left text-[11px]">
+                    <thead>
+                        <tr className="border-b border-zinc-800 text-zinc-500 font-mono uppercase">
+                            <th className="px-4 py-2 font-medium">Relay</th>
+                            <th className="px-4 py-2 font-medium">Conns</th>
+                            <th className="px-4 py-2 font-medium">Notes</th>
+                            <th className="px-4 py-2 font-medium">Storage</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-zinc-800/50 text-zinc-400 font-mono">
+                        {[
+                            { name: "www", conns: "842", notes: "42.1M", storage: "6.2GB" },
+                            { name: "private", conns: "12", notes: "1.2M", storage: "0.4GB" },
+                            { name: "premium", conns: "562", notes: "38.5M", storage: "5.5GB" },
+                            { name: "media", conns: "13", notes: "2.4M", storage: "0.3GB" },
+                        ].map((relay) => (
+                            <tr key={relay.name} className="hover:bg-white/5 transition-colors">
+                                <td className="px-4 py-2 text-zinc-300">{relay.name}.moar.host</td>
+                                <td className="px-4 py-2 text-cyan-500/80">{relay.conns}</td>
+                                <td className="px-4 py-2 text-fuchsia-500/80">{relay.notes}</td>
+                                <td className="px-4 py-2 text-emerald-500/80">{relay.storage}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
 }
+

@@ -83,27 +83,36 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mt-8 max-w-2xl text-2xl font-light leading-relaxed text-zinc-300">
-            Self-hosted. Open Source. <span className="text-white font-medium">One Click.</span>
-          </p>
-
-          <p className="mx-auto mt-4 max-w-2xl text-base text-zinc-400">
-            Launch a sovereign infrastructure stack with a single binary. <br className="hidden sm:block" />
-            Public, Private, Paid, and Media servers working in harmony.
+            It&apos;s the mother relay from which relays spring
           </p>
 
           <div className="mt-12 flex flex-col items-center justify-center gap-6 sm:flex-row">
-            <div className="glass-panel group relative flex min-w-[320px] items-center justify-between rounded-lg px-4 py-3 transition-all hover:border-fuchsia-500/30">
+            <div className="glass-panel group relative flex min-w-[450px] items-center justify-between rounded-lg px-4 py-3 transition-all hover:border-fuchsia-500/30">
               <div className="flex items-center gap-3">
                 <span className="font-mono text-fuchsia-500">$</span>
                 <code className="font-mono text-sm text-zinc-300">
-                  curl -fsSL ... | bash
+                  {INSTALL_CMD}
                 </code>
               </div>
               <CopyButton text={INSTALL_CMD} />
             </div>
           </div>
-          <p className="mt-4 font-mono text-xs text-zinc-600">Linux / macOS / ARM64 / x86_64</p>
+          <p className="mt-4 font-mono text-xs text-zinc-600">Linux / macOS / x86_64</p>
         </div>
+      </section>
+
+      {/* Meme Section */}
+      <section className="relative px-6 py-12 -mt-20 flex flex-col items-center">
+        <div className="glass-panel overflow-hidden rounded-2xl border-white/10 bg-white/5 p-2 shadow-2xl">
+          <img
+            src="/moar.gif"
+            alt="need moar relays"
+            className="w-full max-w-md rounded-xl grayscale hover:grayscale-0 transition-all duration-500"
+          />
+        </div>
+        <p className="mt-6 font-mono text-xl font-bold tracking-widest text-fuchsia-500 uppercase animate-pulse">
+          need moar relays
+        </p>
       </section>
 
       {/* Admin Command Center */}
@@ -151,7 +160,7 @@ export default function Home() {
       <section className="px-6 py-24 bg-zinc-950/30 border-y border-white/5">
         <div className="mx-auto max-w-6xl">
           <div className="mb-12 text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-white">Any Topology</h2>
+            <h2 className="text-3xl font-bold tracking-tight text-white">Popular Presets</h2>
             <p className="mt-4 text-zinc-400">
               Configure your relay for any use case. Mix and match policies.
             </p>
@@ -163,8 +172,8 @@ export default function Home() {
       {/* Deploy Section */}
       <section id="deploy" className="px-6 py-24">
         <div className="mx-auto max-w-5xl text-center">
-          <h2 className="mb-4 text-3xl font-bold tracking-tight text-white">Deploy in Seconds</h2>
-          <p className="mb-12 text-zinc-400">Select a preset. Copy the config. Launch.</p>
+          <h2 className="mb-4 text-3xl font-bold tracking-tight text-white">Vibe Your Relays into Existence</h2>
+          <p className="mb-12 text-zinc-400 text-sm">Describe your dream stack. Let AI generate the MOAR config. Deploy instantly.</p>
 
           <PresetViewer />
         </div>
@@ -178,13 +187,8 @@ export default function Home() {
             <p className="text-xs text-zinc-500 mt-2">© {new Date().getFullYear()} Barry Deen</p>
           </div>
 
-          <div className="pgp-block max-w-xl text-xs sm:text-sm">
-            {`-----BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
-
-Code is speech. Relays are infrastructure.
-Freedom is not free, but it is open source.
------END PGP SIGNED MESSAGE-----`}
+          <div className="text-zinc-500 font-mono text-xs sm:text-sm italic">
+            &quot;i hope you like it, dad&quot;
           </div>
         </div>
       </footer>

@@ -10,7 +10,7 @@ import MockupWoT from "./mockups/MockupWoT";
 const tabs = [
     { id: "dashboard", label: "Dashboard", desc: "Real-time traffic analytics & system health", icon: LayoutDashboard },
     { id: "relays", label: "Relay Manager", desc: "Manage multi-tenant relay instances & policies", icon: Server },
-    { id: "blossom", label: "Blossom CDN", desc: "Host & serve media blobs with BUD-01", icon: Image },
+    { id: "blossom", label: "Blossom Server", desc: "Host & serve media blobs with BUD-01", icon: Image },
     { id: "wot", label: "Web of Trust", desc: "Configure visual spam filters & white-lists", icon: ShieldCheck },
 ];
 
@@ -32,8 +32,8 @@ export default function AdminShowcase() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`group relative flex w-full items-start gap-4 rounded-xl border p-4 text-left transition-all duration-300 ${isActive
-                                        ? "border-fuchsia-500/50 bg-fuchsia-500/10 shadow-[0_0_20px_rgba(217,70,239,0.1)]"
-                                        : "border-transparent bg-zinc-900/30 hover:bg-zinc-900/50 hover:border-zinc-800"
+                                    ? "border-fuchsia-500/50 bg-fuchsia-500/10 shadow-[0_0_20px_rgba(217,70,239,0.1)]"
+                                    : "border-transparent bg-zinc-900/30 hover:bg-zinc-900/50 hover:border-zinc-800"
                                     }`}
                             >
                                 <div className={`mt-0.5 rounded-lg p-2 transition-colors ${isActive ? "bg-fuchsia-500 text-white" : "bg-zinc-800 text-zinc-400 group-hover:text-zinc-200"

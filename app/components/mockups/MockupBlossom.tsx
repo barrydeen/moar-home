@@ -3,20 +3,7 @@ import { Cloud, Trash2, Upload, MoreHorizontal } from "lucide-react";
 export default function MockupBlossom() {
     return (
         <div className="h-full p-6">
-            {/* Storage Bar */}
-            <div className="mb-8 rounded-lg border border-zinc-800 bg-zinc-900/50 p-4">
-                <div className="mb-2 flex justify-between text-xs font-medium text-zinc-400">
-                    <span className="flex items-center gap-2"><Cloud size={14} /> CDN Storage</span>
-                    <span>45% Used</span>
-                </div>
-                <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-800">
-                    <div className="h-full w-[45%] rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
-                </div>
-                <div className="mt-2 flex justify-between text-[10px] text-zinc-600 font-mono">
-                    <span>450GB used</span>
-                    <span>1TB total</span>
-                </div>
-            </div>
+
 
             {/* Toolbar */}
             <div className="mb-4 flex items-center justify-between">
