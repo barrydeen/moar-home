@@ -1,29 +1,31 @@
-import { Shield, UserCheck, Users, Search } from "lucide-react";
+import { Shield, UserCheck, Search } from "lucide-react";
 
 export default function MockupWoT() {
     return (
-        <div className="h-full p-6">
+        <div className="h-full p-4 sm:p-6">
             {/* Trust Score Header */}
-            <div className="mb-6 flex items-center gap-4 rounded-lg border border-fuchsia-500/20 bg-fuchsia-500/5 p-4">
-                <div className="rounded-full bg-fuchsia-500/10 p-2 text-fuchsia-400">
-                    <Shield size={24} />
+            <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 rounded-lg border border-fuchsia-500/20 bg-fuchsia-500/5 p-4">
+                <div className="flex items-center gap-3">
+                    <div className="rounded-full bg-fuchsia-500/10 p-2 text-fuchsia-400">
+                        <Shield size={24} />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-white text-sm">Trust Network Active</h3>
+                        <p className="text-xs text-zinc-400">Blocking 94% of spam events via social graph.</p>
+                    </div>
                 </div>
-                <div>
-                    <h3 className="font-bold text-white">Trust Network Active</h3>
-                    <p className="text-xs text-zinc-400">Blocking 94% of spam events via social graph.</p>
-                </div>
-                <div className="ml-auto text-center">
-                    <span className="block font-mono text-2xl font-bold text-fuchsia-400">Level 3</span>
-                    <span className="text-[10px] text-zinc-500 uppercase">Depth</span>
+                <div className="sm:ml-auto text-left sm:text-center">
+                    <span className="font-mono text-2xl font-bold text-fuchsia-400">Level 3</span>
+                    <span className="ml-2 sm:ml-0 sm:block text-[10px] text-zinc-500 uppercase">Depth</span>
                 </div>
             </div>
 
             {/* Depth Control */}
             <div className="mb-8">
-                <div className="mb-2 flex justify-between text-xs text-zinc-400 font-mono">
-                    <span>Strict (Friends)</span>
-                    <span>Extended (Friends of Friends)</span>
-                    <span>Open (Global)</span>
+                <div className="mb-2 flex justify-between text-[9px] sm:text-xs text-zinc-400 font-mono">
+                    <span>Strict</span>
+                    <span>Extended</span>
+                    <span>Open</span>
                 </div>
 
                 <div className="relative h-2 w-full rounded-full bg-zinc-800">
