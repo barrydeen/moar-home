@@ -1,4 +1,4 @@
-import { Play, Pause, RefreshCw, Settings } from "lucide-react";
+import { Pause, RefreshCw, Settings } from "lucide-react";
 
 export default function MockupRelays() {
     const relays = [
@@ -9,15 +9,40 @@ export default function MockupRelays() {
     ];
 
     return (
-        <div className="h-full p-6">
-            <div className="mb-6 flex items-center justify-between">
+        <div className="h-full p-4 sm:p-6">
+            <div className="mb-4 sm:mb-6 flex items-center justify-between">
                 <h3 className="font-mono text-sm text-zinc-300">Active Relays</h3>
                 <button className="flex items-center gap-2 rounded bg-fuchsia-500 px-3 py-1 text-xs font-bold text-white hover:bg-fuchsia-400">
                     + New Relay
                 </button>
             </div>
 
-            <div className="overflow-hidden rounded border border-zinc-800 bg-zinc-900/30">
+            {/* Card layout for mobile, table for desktop */}
+            <div className="sm:hidden space-y-3">
+                {relays.map((relay) => (
+                    <div key={relay.sub} className="rounded-lg border border-zinc-800 bg-zinc-900/30 p-3">
+                        <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                                <span className={`h-2 w-2 rounded-full ${relay.type === 'public' ? 'bg-cyan-500' : relay.type === 'private' ? 'bg-purple-500' : 'bg-amber-500'}`} />
+                                <span className="text-sm font-medium text-zinc-200">{relay.name}</span>
+                            </div>
+                            <div className="flex gap-2 text-zinc-500">
+                                <button className="hover:text-white"><Pause size={14} /></button>
+                                <button className="hover:text-white"><RefreshCw size={14} /></button>
+                                <button className="hover:text-white"><Settings size={14} /></button>
+                            </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                            <span className="font-mono text-[10px] text-zinc-500">{relay.sub}.moar.host</span>
+                            <span className="inline-flex items-center rounded-full bg-fuchsia-500/10 px-2 py-0.5 text-[10px] font-medium text-fuchsia-400 border border-fuchsia-500/20">
+                                {relay.policy.toUpperCase()}
+                            </span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="hidden sm:block overflow-hidden rounded border border-zinc-800 bg-zinc-900/30">
                 <table className="w-full text-left text-sm">
                     <thead>
                         <tr className="border-b border-zinc-800 bg-zinc-900/50 text-xs text-zinc-500">

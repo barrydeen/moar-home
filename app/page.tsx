@@ -86,15 +86,26 @@ export default function Home() {
             It&apos;s the mother relay from which relays spring
           </p>
 
-          <div className="mt-12 flex flex-col items-center justify-center gap-6 sm:flex-row">
-            <div className="glass-panel group relative flex min-w-[450px] items-center justify-between rounded-lg px-4 py-3 transition-all hover:border-fuchsia-500/30">
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-fuchsia-500">$</span>
-                <code className="font-mono text-sm text-zinc-300">
+          <div className="mt-12 flex flex-col items-center justify-center gap-4 px-2">
+            <p className="flex items-center gap-2 font-mono text-sm font-medium tracking-wide text-fuchsia-400 uppercase">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Install with one command
+              <svg className="h-4 w-4 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </p>
+            <div className="glass-panel group relative flex w-full max-w-xl items-center gap-4 rounded-lg px-4 py-3 transition-all hover:border-fuchsia-500/30">
+              <div className="flex min-w-0 flex-1 items-center gap-3 overflow-x-auto">
+                <span className="font-mono text-fuchsia-500 shrink-0">$</span>
+                <code className="font-mono text-sm text-zinc-300 whitespace-nowrap">
                   {INSTALL_CMD}
                 </code>
               </div>
-              <CopyButton text={INSTALL_CMD} />
+              <div className="shrink-0">
+                <CopyButton text={INSTALL_CMD} />
+              </div>
             </div>
           </div>
           <p className="mt-4 font-mono text-xs text-zinc-600">Linux / macOS / x86_64</p>

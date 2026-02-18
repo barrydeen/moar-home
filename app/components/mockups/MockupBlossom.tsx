@@ -1,9 +1,8 @@
-import { Cloud, Trash2, Upload, MoreHorizontal } from "lucide-react";
+import { Trash2, Upload, MoreHorizontal } from "lucide-react";
 
 export default function MockupBlossom() {
     return (
-        <div className="h-full p-6">
-
+        <div className="h-full p-4 sm:p-6">
 
             {/* Toolbar */}
             <div className="mb-4 flex items-center justify-between">
@@ -14,7 +13,7 @@ export default function MockupBlossom() {
             </div>
 
             {/* Grid */}
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                     <div key={i} className="group relative aspect-square overflow-hidden rounded border border-zinc-800 bg-zinc-900/50 hover:border-cyan-500/50 transition-colors">
                         <div className={`h-full w-full bg-zinc-800/20 ${i % 2 === 0 ? 'bg-gradient-to-br from-zinc-800/20 to-zinc-700/20' : 'bg-gradient-to-tr from-zinc-800/20 to-zinc-700/20'}`} />
